@@ -31,9 +31,13 @@ ext {
 dependencies {
     implementation 'com.vaadin:vaadin-spring-boot-starter'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
     compileOnly 'org.projectlombok:lombok'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.assertj:assertj-core'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
