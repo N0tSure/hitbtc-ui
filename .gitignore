@@ -1,4 +1,12 @@
 # Created by .ignore support plugin (hsz.mobi)
+### Vaadin excludes
+/node_modules/**
+/target
+package.json
+package-lock.json
+webpack.config.js
+webpack.generated.js
+
 ### Gradle template
 .gradle
 /build/
