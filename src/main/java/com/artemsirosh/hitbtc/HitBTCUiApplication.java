@@ -2,6 +2,9 @@ package com.artemsirosh.hitbtc;
 
 import com.artemsirosh.hitbtc.client.SymbolClient;
 import com.artemsirosh.hitbtc.model.Symbol;
+import com.vaadin.flow.data.provider.DataProvider;
+import com.vaadin.flow.data.provider.ListDataProvider;
+import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -21,6 +24,12 @@ public class HitBTCUiApplication {
     @Bean
     Supplier<List<Symbol>> symbolsSupplier(SymbolClient symbolClient) {
         return symbolClient::getSymbols;
+    }
+
+    @Bean
+    @VaadinSessionScope
+    ListDataProvider<Symbol> symbolListDataProvider(SymbolClient client) {
+        return DataProvider.ofCollection(client.getSymbols());
     }
 
 }
