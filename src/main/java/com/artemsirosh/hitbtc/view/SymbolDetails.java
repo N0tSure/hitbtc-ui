@@ -5,10 +5,13 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -85,23 +88,31 @@ public class SymbolDetails extends Composite<VerticalLayout> {
     };
 
     public SymbolDetails() {
+
         final Consumer<Component> componentRegisterer = component -> this.getContent().add(component);
 
-        final H3 symbolId = new H3();
-        componentRegisterer.accept(symbolId);
+        final H3 detailsTitle = new H3();
+        componentRegisterer.accept(detailsTitle);
+
+        final Button close = new Button("Close");
+        close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        close.addClickListener(event -> this.hide());
+
+        final Anchor candlesAnchor = new Anchor("", new Button("Candles"));
+        final Consumer<Symbol> anchorRegisterer = symbol -> {
+            final String path = RouteConfiguration.forSessionScope().getUrl(CandlesView.class, symbol.getId());
+            candlesAnchor.setHref(path);
+        };
 
         this.panelRefresher = Arrays.stream(SYMBOL_PROPERTIES)
             .map(symbolProperty -> propertyRegisterer.apply(symbolProperty, componentRegisterer))
             .reduce(Consumer::andThen)
             .orElse(symbol -> {})
-            .andThen(symbol -> symbolId.setText(symbol.getId()));
-
-        final Button close = new Button("Close");
-        close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        close.addClickListener(event -> this.hide());
-        componentRegisterer.accept(close);
+            .andThen(symbol -> detailsTitle.setText(symbol.getId()))
+            .andThen(anchorRegisterer);
 
         getContent().setVisible(false);
+        getContent().add(new HorizontalLayout(close, candlesAnchor));
     }
 
     private void hide() {
@@ -113,6 +124,11 @@ public class SymbolDetails extends Composite<VerticalLayout> {
         this.getContent().setVisible(true);
     }
 
+    /**
+     * Updates Symbol details panel data using given {@link Symbol}. In case of
+     * {@code null} panel will be hided.
+     * @param symbol using to update panel, may be {@code null}.
+     */
     void update(Symbol symbol) {
         if (symbol != null) {
             this.show(symbol);
