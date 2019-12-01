@@ -7,7 +7,7 @@ import java.time.Instant;
 /**
  * Created on 24 Nov, 2019.
  *
- * Candles are used for representation of a specific symbol as
+ * Candles are using for representation of a specific symbol as
  * <a href="https://en.wikipedia.org/wiki/Open-high-low-close_chart">OHLC</a>
  * chart.
  *
@@ -32,12 +32,12 @@ public class Candle {
     private final String close;
 
     /**
-     * Lowest price for the period.
+     * The lowest price for the period.
      */
     private final String min;
 
     /**
-     * Highest price for the period.
+     * The highest price for the period.
      */
     private final String max;
 
