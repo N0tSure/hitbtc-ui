@@ -1,9 +1,8 @@
 package com.artemsirosh.hitbtc.client;
 
 import com.artemsirosh.hitbtc.model.Candle;
-import com.artemsirosh.hitbtc.model.Periods;
+import com.artemsirosh.hitbtc.model.Period;
 import com.artemsirosh.hitbtc.model.SortDirection;
-import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +21,7 @@ public interface CandleClient {
 
     @GetMapping("/{symbol}")
     List<Candle> getCandles(
-        @PathVariable("symbol") String symbol, @RequestParam("period") Periods period,
+        @PathVariable("symbol") String symbol, @RequestParam("period") Period period,
         @RequestParam("sort") SortDirection sortDirection,
         @RequestParam("from") Instant from, @RequestParam("till") Instant till,
         @RequestParam("limit") int limit, @RequestParam("offset") int offset

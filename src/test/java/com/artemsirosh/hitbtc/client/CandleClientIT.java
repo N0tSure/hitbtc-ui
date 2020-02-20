@@ -1,7 +1,7 @@
 package com.artemsirosh.hitbtc.client;
 
 import com.artemsirosh.hitbtc.model.Candle;
-import com.artemsirosh.hitbtc.model.Periods;
+import com.artemsirosh.hitbtc.model.Period;
 import com.artemsirosh.hitbtc.model.SortDirection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ class CandleClientIT {
     @Test
     void shouldReturnEtheriumBitcoinCandles() {
         List<Candle> candles = candleClient.getCandles(
-            "ETHBTC", Periods.M30, SortDirection.ASC,
+            "ETHBTC", Period.M30, SortDirection.ASC,
             Instant.parse("2019-11-17T00:00:00.000Z"), Instant.parse("2019-11-17T12:00:00.000Z"),
             1, 0);
 
