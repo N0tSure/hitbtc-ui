@@ -2,8 +2,11 @@ package com.artemsirosh.hitbtc;
 
 import com.artemsirosh.hitbtc.client.SymbolClient;
 import com.artemsirosh.hitbtc.model.Symbol;
+import com.artemsirosh.hitbtc.view.InstantPicker;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,6 +33,18 @@ public class HitBTCUiApplication {
     @VaadinSessionScope
     ListDataProvider<Symbol> symbolListDataProvider(SymbolClient client) {
         return DataProvider.ofCollection(client.getSymbols());
+    }
+
+    @Bean
+    @UIScope
+    InstantPicker fromInstantPicker() {
+        return new InstantPicker("Since timestamp", (localDate, localTime) -> {});
+    }
+
+    @Bean
+    @UIScope
+    InstantPicker tillInstantPicker() {
+        return new InstantPicker("Till timestamp", (localDate, localTime) -> {});
     }
 
 }
