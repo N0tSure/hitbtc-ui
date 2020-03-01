@@ -1,6 +1,7 @@
 package com.artemsirosh.hitbtc.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
@@ -19,35 +20,35 @@ public class Candle {
     /**
      * Candle's timestamp. This is timestamp represent a candle's opening.
      */
-    private final Instant timestamp;
+    private Instant timestamp;
 
     /**
      * Candle's open price.
      */
-    private final String open;
+    private String open;
 
     /**
      * Candle's closing price.
      */
-    private final String close;
+    private String close;
 
     /**
      * The lowest price for the period.
      */
-    private final String min;
+    private String min;
 
     /**
      * The highest price for the period.
      */
-    private final String max;
+    private String max;
 
     /**
      * Volume in base currency.
      */
-    private final String volume;
+    private String volume;
 
     /**
      * Volume in quote currency.
      */
-    private final String volumeQuote;
+    private String volumeQuote;
 }
