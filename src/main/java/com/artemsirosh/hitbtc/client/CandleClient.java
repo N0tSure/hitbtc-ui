@@ -21,9 +21,11 @@ public interface CandleClient {
 
     @GetMapping("/{symbol}")
     List<Candle> getCandles(
-        @PathVariable("symbol") String symbol, @RequestParam("period") Period period,
-        @RequestParam("sort") SortDirection sortDirection,
-        @RequestParam("from") Instant from, @RequestParam("till") Instant till,
+        @PathVariable("symbol") String symbol,
+        @RequestParam(value = "period", required = false) String period,
+        @RequestParam(value = "sort", required = false) SortDirection sortDirection,
+        @RequestParam(value = "from", required = false) Instant from,
+        @RequestParam(value = "till", required = false) Instant till,
         @RequestParam("limit") int limit, @RequestParam("offset") int offset
     );
 }
