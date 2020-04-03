@@ -5,7 +5,6 @@ import com.artemsirosh.hitbtc.model.Symbol;
 import com.artemsirosh.hitbtc.view.InstantPicker;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
-import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 import org.springframework.boot.SpringApplication;
@@ -38,13 +37,23 @@ public class HitBTCUiApplication {
     @Bean
     @UIScope
     InstantPicker fromInstantPicker() {
-        return new InstantPicker("Since timestamp", (localDate, localTime) -> {});
+        return new InstantPicker(
+            "Since timestamp",
+            (date, time, datePicker, timePicker) -> {
+                datePicker.setMax(date);
+                timePicker.setMax(time.toString());
+            });
     }
 
     @Bean
     @UIScope
     InstantPicker tillInstantPicker() {
-        return new InstantPicker("Till timestamp", (localDate, localTime) -> {});
+        return new InstantPicker(
+            "Till timestamp",
+            (date, time, datePicker, timePicker) -> {
+                datePicker.setMin(date);
+                timePicker.setMin(time.toString());
+            });
     }
 
 }
