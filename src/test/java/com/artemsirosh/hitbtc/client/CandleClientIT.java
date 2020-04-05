@@ -1,5 +1,6 @@
 package com.artemsirosh.hitbtc.client;
 
+import com.artemsirosh.hitbtc.HitBTCNetConnection;
 import com.artemsirosh.hitbtc.model.Candle;
 import com.artemsirosh.hitbtc.model.Period;
 import com.artemsirosh.hitbtc.model.SortDirection;
@@ -9,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -41,21 +39,13 @@ class CandleClientIT {
      */
     @BeforeAll
     static void checkInetConnection() {
-        try {
-            final URL hitbtcUrl = new URL("https://hitbtc.com");
-            final HttpURLConnection connection = (HttpURLConnection) hitbtcUrl.openConnection();
-            connection.connect();
-
-            Assumptions.assumeTrue(
+        HitBTCNetConnection.checkoutNetworkConnection(
+            connection -> Assumptions.assumeTrue(
                 connection.getResponseCode() == HttpURLConnection.HTTP_OK,
-                "Connection to " + hitbtcUrl + " failed with status: " + connection.getResponseCode()
-            );
-
-            connection.disconnect();
-
-        } catch (IOException exc) {
-            Assumptions.assumeTrue(false, exc.getMessage());
-        }
+                "Connection to " + connection.getURL() + " failed with status: " + connection.getResponseCode()
+            ),
+            exc -> Assumptions.assumeTrue(false, exc.getMessage())
+        );
     }
 
     @Test
