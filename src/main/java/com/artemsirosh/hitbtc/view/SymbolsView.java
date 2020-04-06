@@ -8,14 +8,18 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Created at 21-11-2019
@@ -30,7 +34,11 @@ import java.util.Optional;
 @SpringComponent
 public class SymbolsView extends Composite<HorizontalLayout> {
 
-    public SymbolsView(ListDataProvider<Symbol> symbolListDataProvider, SymbolDetails symbolDetails) {
+    public SymbolsView(
+        @Qualifier("symbolsProvider") final Supplier<List<Symbol>> symbolsProvider,
+        final SymbolDetails symbolDetails
+    ) {
+        final ListDataProvider<Symbol> symbolListDataProvider = DataProvider.ofCollection(symbolsProvider.get());
 
         final ComboBox<String> filterSelect = new ComboBox<>("Find symbol");
         filterSelect.setItems(symbolListDataProvider.fetch(new Query<>()).map(Symbol::getId));

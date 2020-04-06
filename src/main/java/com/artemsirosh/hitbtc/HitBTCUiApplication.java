@@ -11,6 +11,7 @@ import com.artemsirosh.hitbtc.view.InstantPicker;
 import com.vaadin.flow.data.provider.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.spring.annotation.VaadinSessionScope;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -30,15 +31,9 @@ public class HitBTCUiApplication {
         SpringApplication.run(HitBTCUiApplication.class, args);
     }
 
-    @Bean
-    Supplier<List<Symbol>> symbolsSupplier(SymbolClient symbolClient) {
+    @Bean @Qualifier("symbolsProvider")
+    Supplier<List<Symbol>> symbolsProvider(SymbolClient symbolClient) {
         return symbolClient::getSymbols;
-    }
-
-    @Bean
-    @VaadinSessionScope
-    ListDataProvider<Symbol> symbolListDataProvider(SymbolClient client) {
-        return DataProvider.ofCollection(client.getSymbols());
     }
 
     @Bean
