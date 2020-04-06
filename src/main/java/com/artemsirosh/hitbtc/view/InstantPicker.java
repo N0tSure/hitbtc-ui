@@ -7,7 +7,6 @@ import com.vaadin.flow.component.timepicker.TimePicker;
 import java.time.*;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -36,7 +35,7 @@ public class InstantPicker extends CustomField<Instant> {
      * @param label of field
      * @param thresholdAdjuster adjust minimal or maximal value of field
      */
-    public InstantPicker(String label, BiConsumer<LocalDate, LocalTime> thresholdAdjuster) {
+    public InstantPicker(String label, ThresholdAdjuster thresholdAdjuster) {
         final DatePicker datePicker = new DatePicker();
         final TimePicker timePicker = new TimePicker();
         final ZoneOffset utcOffset = ZoneOffset.UTC;
@@ -54,12 +53,10 @@ public class InstantPicker extends CustomField<Instant> {
                 timePicker.setValue(dateTime.toLocalTime());
             });
 
-        this.listener = event -> {
-           Optional.ofNullable(event.getValue()).ifPresent(instant -> {
-               final OffsetDateTime dt = instantToDateTime.apply(instant);
-               thresholdAdjuster.accept(dt.toLocalDate(), dt.toLocalTime());
-           });
-        };
+        this.listener = event -> Optional.ofNullable(event.getValue()).ifPresent(instant -> {
+            final OffsetDateTime dt = instantToDateTime.apply(instant);
+            thresholdAdjuster.adjust(dt.toLocalDate(), dt.toLocalTime(), datePicker, timePicker);
+        });
 
         this.setLabel(label);
         this.add(datePicker, timePicker);
@@ -81,5 +78,11 @@ public class InstantPicker extends CustomField<Instant> {
     @Override
     protected void setPresentationValue(Instant newPresentationValue) {
         modelValueSetter.accept(newPresentationValue);
+    }
+
+    @FunctionalInterface
+    public interface ThresholdAdjuster {
+
+        void adjust(LocalDate date, LocalTime time, DatePicker datePicker, TimePicker timePicker);
     }
 }
