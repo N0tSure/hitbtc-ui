@@ -2,9 +2,13 @@ package com.artemsirosh.hitbtc.view;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasElement;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -35,6 +39,10 @@ public class MainLayout extends Composite<VerticalLayout> implements RouterLayou
 
         final VerticalLayout navBar = new VerticalLayout();
         navBar.setWidth("200px");
+
+        final Button mainViewButton = new Button("Symbols");
+        mainViewButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        navBar.add(new Anchor(RouteConfiguration.forSessionScope().getUrl(SymbolsView.class), mainViewButton));
 
         final HorizontalLayout center = new HorizontalLayout();
         center.setWidth("100%");
